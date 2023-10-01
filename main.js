@@ -5370,6 +5370,6 @@ var client = new import_pg.Client({
   password: "copy-insert-db",
   database: "copy-insert-db"
 });
-var numRecords = 1e5;
+var numRecords = 1e6;
 var data = Array.from({ length: numRecords }, (_, i) => [`data_${i}`, new Date().toISOString()]);
 main();

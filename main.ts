@@ -11,7 +11,7 @@ const client = new Client({
     database: 'copy-insert-db'
 });
 
-const numRecords = 100000;
+const numRecords = 5000000;
 const data = Array.from({ length: numRecords }, (_, i) => [`data_${i}`, new Date().toISOString()]);
 
 async function measureInsert() {
