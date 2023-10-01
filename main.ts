@@ -12,7 +12,7 @@ const client = new Client({
 });
 
 const numRecords = 100000;
-const data = Array.from({ length: numRecords }, (_, i) => [`data_${i}`, new Date()]);
+const data = Array.from({ length: numRecords }, (_, i) => [`data_${i}`, new Date().toISOString()]);
 
 async function measureInsert() {
     const chunkSize = 1000;

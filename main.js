@@ -5338,17 +5338,24 @@ async function measureInsert() {
   console.log(`Multi-line INSERT took: ${duration} seconds`);
 }
 async function measureCopy() {
-  const writableStream = fs.createWriteStream("data.csv");
-  writableStream.on("finish", async () => {
-    const startTime = Date.now();
-    const stream = fs.createReadStream("data.csv");
-    const copyPsqlStream = client.query($from("COPY test_table (data, time_added) FROM STDIN WITH (FORMAT CSV)"));
-    await pipeline(stream, copyPsqlStream);
-    const duration = (Date.now() - startTime) / 1000;
-    console.log(`COPY took: ${duration} seconds`);
+  return new Promise((resolve, reject) => {
+    const writableStream = fs.createWriteStream("data.csv");
+    writableStream.on("finish", async () => {
+      try {
+        const startTime = Date.now();
+        const stream = fs.createReadStream("data.csv");
+        const copyPsqlStream = client.query($from("COPY test_table (data, time_added) FROM STDIN WITH (FORMAT CSV)"));
+        await pipeline(stream, copyPsqlStream);
+        const duration = (Date.now() - startTime) / 1000;
+        console.log(`COPY took: ${duration} seconds`);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+    data.forEach((d) => writableStream.write(d.join(",") + "\n"));
+    writableStream.end();
   });
-  data.forEach((d) => writableStream.write(d.join(",") + "\n"));
-  writableStream.end();
 }
 async function main() {
   await client.connect();
@@ -5364,5 +5371,5 @@ var client = new import_pg.Client({
   database: "copy-insert-db"
 });
 var numRecords = 1e5;
-var data = Array.from({ length: numRecords }, (_, i) => [`data_${i}`, new Date]);
+var data = Array.from({ length: numRecords }, (_, i) => [`data_${i}`, new Date().toISOString()]);
 main();
