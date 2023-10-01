@@ -37,25 +37,25 @@ async function measureInsert() {
 
 async function measureCopy() {
     return new Promise<void>((resolve, reject) => {
-    const writableStream = fs.createWriteStream("data.csv");
+        const writableStream = fs.createWriteStream("data.csv");
 
-    writableStream.on("finish", async () => {
-        try {
-            const startTime = Date.now();
-            const stream = fs.createReadStream("data.csv");
-            const copyPsqlStream = client.query(copyFrom('COPY test_table (data, time_added) FROM STDIN WITH (FORMAT CSV)'));
-            await pipeline(stream, copyPsqlStream);
-            const duration = (Date.now() - startTime) / 1000;
-            console.log(`COPY took: ${duration} seconds`);
-            resolve();
-        } catch (err) {
-            reject(err);
-        }
+        writableStream.on("finish", async () => {
+            try {
+                const startTime = Date.now();
+                const stream = fs.createReadStream("data.csv");
+                const copyPsqlStream = client.query(copyFrom('COPY test_table (data, time_added) FROM STDIN WITH (FORMAT CSV)'));
+                await pipeline(stream, copyPsqlStream);
+                const duration = (Date.now() - startTime) / 1000;
+                console.log(`COPY took: ${duration} seconds`);
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+
+        data.forEach(d => writableStream.write(d.join(',') + '\n'));
+        writableStream.end();
     });
-
-    data.forEach(d => writableStream.write(d.join(',') + '\n'));
-    writableStream.end();
-});
 }
 
 async function main() {
