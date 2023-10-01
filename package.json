@@ -3,13 +3,16 @@
   "module": "main.ts",
   "type": "module",
   "devDependencies": {
+    "@types/pg-copy-streams": "^1.2.3",
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@types/pg": "^8.10.3",
     "fast-csv": "^4.3.6",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "pg-copy-streams": "^6.0.6"
   }
 }

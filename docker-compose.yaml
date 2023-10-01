@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  copyinsertdb:
+    build:
+      context: config/docker/postgres/
+      dockerfile: Dockerfile.dev
+    command:
+      [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf" ]
+    container_name: copy-insert-db-container
+    volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/scripts.sql
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_USER: copy-insert-db
+      POSTGRES_PASSWORD: copy-insert-db
+      POSTGRES_DB: copy-insert-db
+    ports:
+      - '6472:5432'
+    restart: unless-stopped
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U copy-insert-db' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
