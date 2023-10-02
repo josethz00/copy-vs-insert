@@ -39,3 +39,10 @@ The same applies to the version without threads:
 and then
 
 `bun run main-simple.js`
+
+## Results
+
+To see the results you can run the [Results notebook](https://github.com/josethz00/copy-vs-insert/blob/main/results.ipynb) or visualize it here.
+
+![results](https://github.com/josethz00/copy-vs-insert/assets/50122248/093da01f-155a-4369-b5a5-3ae08143a628)
+
