@@ -45,7 +45,7 @@ async function measureCopy() {
 
                 Bun.spawn(['split', '-l', String(Math.floor(numRecords / 20)), 'data.csv', 'out_']);
 
-                const filePrefixes = ['aa', 'ab', 'ac', 'ad', 'ae'];
+                const filePrefixes = ['aa', 'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah', 'ai', 'aj', 'ak', 'al', 'am', 'an', 'ao', 'ap', 'aq', 'ar', 'as', 'at'];
                 const workerPromises = filePrefixes.map(prefix => runWorker(prefix));
                 await Promise.all(workerPromises);
                 
